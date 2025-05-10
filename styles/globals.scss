@@ -1,0 +1,330 @@
+@import './variables.scss';
+@import './mixins.scss';
+
+// Reset & Base Styles
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: $font-family-base;
+  color: $color-neutral-800;
+  background-color: $color-neutral-100;
+  line-height: $line-height-body;
+}
+
+a {
+  color: $color-secondary;
+  text-decoration: none;
+  transition: color $transition-fast $transition-timing;
+  
+  &:hover {
+    color: $color-secondary-dark;
+  }
+}
+
+button, input, textarea, select {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+// Typography scales
+h1 {
+  @include heading-1;
+  margin-bottom: $spacing-6;
+}
+
+h2 {
+  @include heading-2;
+  margin-bottom: $spacing-5;
+}
+
+h3 {
+  @include heading-3;
+  margin-bottom: $spacing-4;
+}
+
+h4 {
+  @include heading-4;
+  margin-bottom: $spacing-3;
+}
+
+p {
+  @include body-text;
+  margin-bottom: $spacing-4;
+}
+
+// Form elements
+input, textarea, select {
+  width: 100%;
+  padding: $spacing-2 $spacing-3;
+  border: $border-width-thin solid $color-neutral-300;
+  border-radius: $border-radius-md;
+  background-color: white;
+  transition: border-color $transition-fast $transition-timing;
+  
+  &:focus {
+    outline: none;
+    border-color: $color-primary;
+    box-shadow: 0 0 0 3px rgba($color-primary, 0.1);
+  }
+}
+
+// Buttons
+.btn {
+  @include button-base;
+  
+  &-primary {
+    @include button-primary;
+  }
+  
+  &-secondary {
+    @include button-secondary;
+  }
+  
+  &-outline {
+    @include button-outline;
+  }
+  
+  &-small {
+    padding: $spacing-1 $spacing-3;
+    font-size: $font-size-sm;
+  }
+  
+  &-large {
+    padding: $spacing-3 $spacing-5;
+    font-size: $font-size-lg;
+  }
+}
+
+// Layout utilities
+.container {
+  @include container;
+}
+
+.flex {
+  display: flex;
+  
+  &-center {
+    @include flex-center;
+  }
+  
+  &-between {
+    @include flex-between;
+  }
+  
+  &-col {
+    flex-direction: column;
+  }
+}
+
+.grid {
+  @include grid;
+  
+  @for $i from 1 through 6 {
+    &-cols-#{$i} {
+      grid-template-columns: repeat($i, 1fr);
+    }
+  }
+}
+
+// Spacing utilities
+@each $name, $size in (
+  '0': $spacing-0,
+  '1': $spacing-1,
+  '2': $spacing-2,
+  '3': $spacing-3,
+  '4': $spacing-4,
+  '5': $spacing-5,
+  '6': $spacing-6,
+  '8': $spacing-8,
+  '10': $spacing-10,
+  '12': $spacing-12
+) {
+  .m-#{$name} { margin: $size; }
+  .mx-#{$name} { margin-left: $size; margin-right: $size; }
+  .my-#{$name} { margin-top: $size; margin-bottom: $size; }
+  .mt-#{$name} { margin-top: $size; }
+  .mr-#{$name} { margin-right: $size; }
+  .mb-#{$name} { margin-bottom: $size; }
+  .ml-#{$name} { margin-left: $size; }
+  
+  .p-#{$name} { padding: $size; }
+  .px-#{$name} { padding-left: $size; padding-right: $size; }
+  .py-#{$name} { padding-top: $size; padding-bottom: $size; }
+  .pt-#{$name} { padding-top: $size; }
+  .pr-#{$name} { padding-right: $size; }
+  .pb-#{$name} { padding-bottom: $size; }
+  .pl-#{$name} { padding-left: $size; }
+}
+
+// Website builder specific styles
+.builder {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  
+  &__header {
+    @include flex-between;
+    padding: $spacing-4;
+    background-color: white;
+    border-bottom: $border-width-thin solid $color-neutral-200;
+    height: 64px;
+  }
+  
+  &__main {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+  
+  &__sidebar {
+    width: 280px;
+    background-color: white;
+    border-right: $border-width-thin solid $color-neutral-200;
+    overflow-y: auto;
+    @include scrollbar;
+    
+    @include responsive(md) {
+      width: 320px;
+    }
+  }
+  
+  &__panel {
+    width: 280px;
+    background-color: white;
+    border-left: $border-width-thin solid $color-neutral-200;
+    overflow-y: auto;
+    @include scrollbar;
+    
+    @include responsive(md) {
+      width: 320px;
+    }
+  }
+  
+  &__canvas {
+    flex: 1;
+    position: relative;
+    overflow: auto;
+    background-color: $color-neutral-200;
+    @include scrollbar;
+  }
+  
+  &__component {
+    background-color: white;
+    border: $border-width-thin solid $color-neutral-300;
+    border-radius: $border-radius-md;
+    padding: $spacing-3;
+    margin-bottom: $spacing-3;
+    cursor: grab;
+    transition: all $transition-fast $transition-timing;
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: $shadow-sm;
+    }
+    
+    &:active {
+      cursor: grabbing;
+    }
+  }
+  
+  &__section {
+    margin-bottom: $spacing-6;
+    
+    &-title {
+      font-size: $font-size-md;
+      font-weight: $font-weight-medium;
+      color: $color-neutral-700;
+      margin-bottom: $spacing-3;
+      padding: 0 $spacing-4;
+    }
+  }
+  
+  // ReactFlow specific styles
+  .react-flow {
+    &__node {
+      border-radius: $border-radius-md;
+      padding: 0;
+      border: none;
+      
+      &-selected {
+        box-shadow: 0 0 0 2px $color-secondary;
+      }
+    }
+    
+    &__handle {
+      background-color: $color-secondary;
+      border: 2px solid white;
+      width: 10px;
+      height: 10px;
+    }
+    
+    &__controls {
+      box-shadow: $shadow-md;
+      border-radius: $border-radius-md;
+      button {
+        width: 24px;
+        height: 24px;
+        
+        svg {
+          width: 14px;
+          height: 14px;
+        }
+      }
+    }
+  }
+}
+
+// Component Preview styles
+.preview {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  
+  &__header {
+    @include flex-between;
+    padding: $spacing-4;
+    background-color: white;
+    border-bottom: $border-width-thin solid $color-neutral-200;
+  }
+  
+  &__content {
+    flex: 1;
+    padding: $spacing-4;
+    overflow: auto;
+  }
+}
+
+// Animations
+.fade-in {
+  @include fade-in;
+}
+
+.slide-in-right {
+  @include slide-in('right');
+}
+
+.slide-in-left {
+  @include slide-in('left');
+}
+
+.slide-in-up {
+  @include slide-in('up');
+}
+
+.slide-in-down {
+  @include slide-in('down');
+}
